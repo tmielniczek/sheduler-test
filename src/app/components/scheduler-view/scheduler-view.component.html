@@ -1,0 +1,14 @@
+<div class="scheduler">
+  <div class="column" *ngFor="let column of columns" [ngStyle]="{backgroundColor: columnColor}">
+    <div style="padding-bottom: 30px">{{column}}</div>
+    <div class="channel" *ngFor="let channel of row" [ngStyle]="{backgroundColor: rowColor}">
+      <div class="event">
+        <div class="event-title">event</div>
+        <div class="event-body">{{channel}}</div>
+        <mat-icon>delete</mat-icon>
+        <mat-icon>pencil</mat-icon>
+      </div>
+    </div>
+  </div>
+</div>
+

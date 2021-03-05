@@ -1,0 +1,24 @@
+.column{
+  width: 100px;
+  height: 50px;
+  background-color: red;
+  display: flex;
+  flex-direction: column;
+}
+
+.scheduler{
+  height: 100vh;
+  display: flex;
+}
+
+.channel{
+  min-width: 100px;
+  min-height: 70px;
+  border: 1px solid black;
+}
+
+.event{
+  width: 90%;
+  height: 90%;
+  background-color: #52c6ff;
+}
