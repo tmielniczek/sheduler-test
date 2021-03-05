@@ -1,6 +1,7 @@
 import {Component} from '@angular/core';
-import {SchedulerEvent} from '@progress/kendo-angular-scheduler';
+import {CreateFormGroupArgs, EditMode, SchedulerEvent} from '@progress/kendo-angular-scheduler';
 import {eventFunction} from './events-utc';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 
 @Component({
   selector: 'app-root',
@@ -8,17 +9,17 @@ import {eventFunction} from './events-utc';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
+
+  constructor(private formBuilder: FormBuilder) {
+    this.createFormGroup = this.createFormGroup.bind(this);
+  }
+
   isView = true;
   public selectedDate: Date = new Date();
   public events: SchedulerEvent[] = eventFunction();
+  public formGroup: FormGroup;
 
   public editableSetting = {add: true, remove: true, drag: true, edit: true, resize: true};
-
-  ngOnInit() {
-    const header = document.createElement('header');
-    const shadowRoot = header.attachShadow({mode: 'open'});
-    shadowRoot.innerHTML = '<h1>Hello Shadow DOM</h1>';
-  }
 
   public group: any = {
     resources: ['Channels'],
@@ -53,6 +54,35 @@ export class AppComponent {
     textField: 'text',
     colorField: 'color'
   }];
+  private Validators: any;
+
+  public createFormGroup(args: CreateFormGroupArgs): FormGroup {
+    const dataItem = args.dataItem;
+    const isOccurrence = args.mode === EditMode.Occurrence;
+    const exceptions = isOccurrence ? [] : dataItem.recurrenceExceptions;
+
+    this.formGroup = this.formBuilder.group({
+      id: args.isNew ? this.getNextId() : dataItem.id,
+      start: [dataItem.start, Validators.required],
+      end: [dataItem.end, this.Validators.required],
+      startTimezone: [dataItem.startTimezone],
+      endTimezone: [dataItem.endTimezone],
+      isAllDay: dataItem.isAllDay,
+      title: dataItem.title,
+      description: dataItem.description,
+      recurrenceRule: dataItem.recurrenceRule,
+      recurrenceId: dataItem.recurrenceId,
+      recurrenceExceptions: [exceptions]
+    });
+
+    return this.formGroup;
+  }
+
+  public getNextId(): number {
+    const len = this.events.length;
+
+    return (len === 0) ? 1 : this.events[this.events.length - 1].id + 1;
+  }
 
   changeView(): void {
     this.isView = !this.isView;

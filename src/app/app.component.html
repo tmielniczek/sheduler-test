@@ -1,3 +1,17 @@
-<button (click)="changeView()">Change view</button>
-<app-scheduler-view *ngIf="isView" [columnColor]="'red'" [rowColor]="'blue'"></app-scheduler-view>
-<app-scheduler-view *ngIf="!isView" [columnColor]="'yellow'" [rowColor]="'green'"></app-scheduler-view>
+<kendo-scheduler
+  [kendoSchedulerBinding]="events"
+  [kendoSchedulerReactiveEditing]="createFormGroup"
+  [selectedDate]="selectedDate"
+  [resources]="resources"
+  [group]="group"
+  style="height: 100vh"
+>
+  <kendo-scheduler-timeline-view [eventHeight]="80">
+  </kendo-scheduler-timeline-view>
+
+  <kendo-scheduler-timeline-week-view [eventHeight]="80">
+  </kendo-scheduler-timeline-week-view>
+
+  <kendo-scheduler-timeline-month-view [eventHeight]="80">
+  </kendo-scheduler-timeline-month-view>
+</kendo-scheduler>
